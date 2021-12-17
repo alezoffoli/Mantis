@@ -35,6 +35,7 @@ let cropViewMinimumBoxSize: CGFloat = 42
 let minimumAspectRatio: CGFloat = 0
 let hotAreaUnit: CGFloat = 32
 let cropViewPadding:CGFloat = 14.0
+let dialPadding: CGFloat = 10.0
 
 class CropView: UIView {
 
@@ -253,7 +254,7 @@ class CropView: UIView {
         }
 
         let boardLength = min(bounds.width, bounds.height) * 0.6
-        let rotationDial = RotationDial(frame: CGRect(x: 0, y: 0, width: boardLength, height: angleDashboardHeight), dialConfig: dialConfig)
+        let rotationDial = RotationDial(frame: CGRect(x: 0, y: dialPadding, width: boardLength, height: angleDashboardHeight), dialConfig: dialConfig)
         self.rotationDial = rotationDial
         rotationDial.isUserInteractionEnabled = true
         addSubview(rotationDial)
@@ -283,15 +284,15 @@ class CropView: UIView {
         if Orientation.isPortrait {
             rotationDial.transform = CGAffineTransform(rotationAngle: 0)
             rotationDial.frame.origin.x = gridOverlayView.frame.origin.x +  (gridOverlayView.frame.width - rotationDial.frame.width) / 2
-            rotationDial.frame.origin.y = gridOverlayView.frame.maxY
+            rotationDial.frame.origin.y = dialPadding + gridOverlayView.frame.maxY
         } else if Orientation.isLandscapeLeft {
             rotationDial.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
             rotationDial.frame.origin.x = gridOverlayView.frame.maxX
-            rotationDial.frame.origin.y = gridOverlayView.frame.origin.y + (gridOverlayView.frame.height - rotationDial.frame.height) / 2
+            rotationDial.frame.origin.y = dialPadding + gridOverlayView.frame.origin.y + (gridOverlayView.frame.height - rotationDial.frame.height) / 2
         } else if Orientation.isLandscapeRight {
             rotationDial.transform = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
             rotationDial.frame.origin.x = gridOverlayView.frame.minX - rotationDial.frame.width
-            rotationDial.frame.origin.y = gridOverlayView.frame.origin.y + (gridOverlayView.frame.height - rotationDial.frame.height) / 2
+            rotationDial.frame.origin.y = dialPadding + gridOverlayView.frame.origin.y + (gridOverlayView.frame.height - rotationDial.frame.height) / 2
         }
     }
     
@@ -346,7 +347,7 @@ class CropView: UIView {
                                                 
             viewModel.cropBoxFrame = CGRect(x: minX, y: minY, width: maxX - minX, height: maxY - minY)
         }
-    }    
+    }
 }
 
 
@@ -547,7 +548,7 @@ extension CropView {
         scrollView.zoomScale = newZoomScale
         
         scrollView.checkContentOffset()
-    }    
+    }
 }
 
 // MARK: - internal API
@@ -675,7 +676,7 @@ extension CropView {
             return
         }
         
-        var rect = gridOverlayView.frame        
+        var rect = gridOverlayView.frame
         rect.size.width = gridOverlayView.frame.height
         rect.size.height = gridOverlayView.frame.width
         
